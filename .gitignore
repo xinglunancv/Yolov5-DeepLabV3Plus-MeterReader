@@ -1,0 +1,5 @@
+bin
+cmake-build-debug
+.idea
+*.wts
+*.engine

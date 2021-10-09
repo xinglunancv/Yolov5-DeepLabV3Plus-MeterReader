@@ -1,2 +1,0 @@
-# Yolov5-DeepLabV3Plus-MeterReader
-使用YOLOv5+DeepLabV3Plus实现仪表的检测、指针表盘分割和刻度读数识别
