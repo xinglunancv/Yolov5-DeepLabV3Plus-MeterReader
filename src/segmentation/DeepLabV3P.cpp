@@ -22,7 +22,7 @@ const char* OUTPUT_BLOB_NAME = "prob";
 
 static const int INPUT_H = 400;
 static const int INPUT_W = 400;
-static const int OUTPUT_NUM = 3;
+static const int OUTPUT_NUM = 4;
 
 nvinfer1::IActivationLayer* DeepLabV3P::aspp(nvinfer1::INetworkDefinition *network,
                                  std::map<std::string, nvinfer1::Weights>& weightMap, nvinfer1::ITensor& input){
@@ -398,15 +398,15 @@ cv::Mat DeepLabV3P::Detect(cv::Mat &img) {
     static float prob[OUTPUT_NUM * INPUT_H * INPUT_W];
     float mask[INPUT_H * INPUT_W];
 
-    cv::Mat pr_img = TensorRTUtil::ResizeRatio(img, INPUT_H, INPUT_W);
+    img = TensorRTUtil::ResizeRatio(img, INPUT_H, INPUT_W);
 
     int i = 0;
     for (int row = 0; row < INPUT_H; ++row) {
-        uchar *uc_pixel = pr_img.data + row * pr_img.step;
+        uchar *uc_pixel = img.data + row * img.step;
         for (int col = 0; col < INPUT_W; ++col) {
-            data[i] = ((float) uc_pixel[2] / 255.0 - 0.625) / 0.131;
-            data[i + INPUT_H * INPUT_W] = ((float) uc_pixel[1] / 255.0 - 0.448) / 0.177;
-            data[i + 2 * INPUT_H * INPUT_W] = ((float) uc_pixel[0] / 255.0 - 0.688) / 0.101;
+            data[i] = ((float) uc_pixel[2] / 255.0 - 0.599) / 0.142;
+            data[i + INPUT_H * INPUT_W] = ((float) uc_pixel[1] / 255.0 - 0.596) / 0.134;
+            data[i + 2 * INPUT_H * INPUT_W] = ((float) uc_pixel[0] / 255.0 - 0.568) / 0.109;
             uc_pixel += 3;
             ++i;
         }
@@ -426,13 +426,7 @@ cv::Mat DeepLabV3P::Detect(cv::Mat &img) {
         ptmp = mask_mat.ptr<uchar>(i);
         for (int j = 0; j < INPUT_W; j++) {
             float *pixcel = mask + i * INPUT_W + j;
-            if (*pixcel == 0) {
-                ptmp[j] = 0;
-            } else if (*pixcel == 1) {
-                ptmp[j] = 127;
-            } else {
-                ptmp[j] = 255;
-            }
+            ptmp[j] = *pixcel;
         }
     }
 

@@ -17,7 +17,7 @@
 
 namespace TensorRTUtil{
 
-    void ListAllFiles(std::string path, std::vector<std::string> &files);
+    void ListAllFiles(std::string path, std::vector<std::string> &files, std::vector<std::string> &filenames);
 
     // 判断文件是否存在
     bool IsFileExists(const std::string &filePath);

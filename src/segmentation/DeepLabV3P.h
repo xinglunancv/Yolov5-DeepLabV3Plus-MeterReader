@@ -8,11 +8,6 @@
 #include "TensorRTUtil.h"
 #include "logging.h"
 
-
-
-
-
-
 class DeepLabV3P{
 
 public:

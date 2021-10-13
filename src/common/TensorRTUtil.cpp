@@ -173,7 +173,7 @@ void TensorRTUtil::PostProcessing(float *mask, float *prob, int input_h, int inp
 }
 
 // 输出文件夹内所有文件
-void TensorRTUtil::ListAllFiles(std::string path, std::vector<std::string> &files) {
+void TensorRTUtil::ListAllFiles(std::string path, std::vector<std::string> &files, std::vector<std::string> &filenames) {
     DIR *dir;
     struct dirent *ptr;
     if ((dir = opendir(path.c_str())) == NULL) {
@@ -182,12 +182,14 @@ void TensorRTUtil::ListAllFiles(std::string path, std::vector<std::string> &file
     while ((ptr = readdir(dir)) != NULL) {
         if (strcmp(ptr->d_name, ".") == 0 || strcmp(ptr->d_name, "..") == 0)
             continue;
-        else if (ptr->d_type == 8)//file
+        else if (ptr->d_type == 8){//file
             files.push_back(path + "/" + ptr->d_name);
+            filenames.push_back(ptr->d_name);
+        }
         else if (ptr->d_type == 10)//link file
             continue;
         else if (ptr->d_type == 4) {//dir
-            ListAllFiles(path + "/" + ptr->d_name, files);
+            ListAllFiles(path + "/" + ptr->d_name, files, filenames);
         }
     }
     closedir(dir);
