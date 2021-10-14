@@ -34,6 +34,7 @@ include_directories(
         /opt/TensorRT-7.2.3.4/targets/x86_64-linux-gnu/include
         ${project_src}/common
         ${project_src}/segmentation
+        ${project_src}/meter
 )
 find_package(OpenCV)
 include_directories(OpenCV_INCLUDE_DIRS)
@@ -43,6 +44,7 @@ include_directories(OpenCV_INCLUDE_DIRS)
 aux_source_directory(${project_src} src)
 aux_source_directory(${project_src}/common src)
 aux_source_directory(${project_src}/segmentation src)
+aux_source_directory(${project_src}/meter src)
 
 add_executable(${project_name} ${src})
 
